@@ -462,7 +462,16 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
      */
     public function count()
     {
-        return $this->getNbResults();
+        $maxPerPage = $this->getMaxPerPage();
+
+        if (!$this->hasNextPage()) {
+            $nbResults = $this->getNbResults();
+            $nbPages = $this->getNbPages();
+
+            return $nbResults - (($nbPages - 1) * $maxPerPage);
+        }
+
+        return $maxPerPage;
     }
 
     /**
